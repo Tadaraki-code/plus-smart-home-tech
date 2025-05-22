@@ -8,10 +8,11 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler<T> {
 
     private final KafkaProducerService kafkaProducerService;
-    private final String topic = "telemetry.sensors.v1";
+    private final String topic;
 
-    protected BaseSensorEventHandler(KafkaProducerService kafkaProducerService) {
+    protected BaseSensorEventHandler(KafkaProducerService kafkaProducerService, String sensorTopic) {
         this.kafkaProducerService = kafkaProducerService;
+        this.topic = sensorTopic;
     }
 
     @Override

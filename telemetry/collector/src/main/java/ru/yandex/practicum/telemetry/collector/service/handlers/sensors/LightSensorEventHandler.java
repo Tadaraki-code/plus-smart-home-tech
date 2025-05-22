@@ -10,8 +10,8 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 @Component
 public class LightSensorEventHandler extends BaseSensorEventHandler<LightSensorAvro> {
 
-    protected LightSensorEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected LightSensorEventHandler(KafkaProducerService kafkaProducerService, String sensorTopic) {
+        super(kafkaProducerService, sensorTopic);
     }
 
     @Override

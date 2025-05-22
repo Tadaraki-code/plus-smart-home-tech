@@ -12,8 +12,8 @@ import java.util.List;
 @Component
 public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAddedEventAvro> {
 
-    protected ScenarioAddedEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected ScenarioAddedEventHandler(KafkaProducerService kafkaProducerService, String hubTopic) {
+        super(kafkaProducerService, hubTopic);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAdded
 
         List<ScenarioConditionAvro> scenarioConditionAvros = _event.getConditions()
                 .stream()
-                .map( s -> ScenarioConditionAvro.newBuilder()
+                .map(s -> ScenarioConditionAvro.newBuilder()
                         .setSensorId(s.getSensorId())
                         .setType(ConditionTypeAvro.valueOf(s.getType().name()))
                         .setOperation(ConditionOperationAvro.valueOf(s.getOperation().name()))
@@ -37,7 +37,7 @@ public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAdded
 
         List<DeviceActionAvro> deviceActionAvros = _event.getActions()
                 .stream()
-                .map( d -> DeviceActionAvro.newBuilder()
+                .map(d -> DeviceActionAvro.newBuilder()
                         .setSensorId(d.getSensorId())
                         .setType(ActionTypeAvro.valueOf(d.getType().name()))
                         .setValue(d.getValue())

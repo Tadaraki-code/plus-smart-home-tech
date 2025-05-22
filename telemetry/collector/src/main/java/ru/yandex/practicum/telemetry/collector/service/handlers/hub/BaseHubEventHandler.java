@@ -8,10 +8,11 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 public abstract class BaseHubEventHandler <T extends SpecificRecordBase> implements HubEventHandler<T> {
 
     private final KafkaProducerService kafkaProducerService;
-    private final String topic = "telemetry.hubs.v1";
+    private final String topic;
 
-    protected BaseHubEventHandler(KafkaProducerService kafkaProducerService) {
+    protected BaseHubEventHandler(KafkaProducerService kafkaProducerService, String hubTopic) {
         this.kafkaProducerService = kafkaProducerService;
+        this.topic = hubTopic;
     }
 
     @Override

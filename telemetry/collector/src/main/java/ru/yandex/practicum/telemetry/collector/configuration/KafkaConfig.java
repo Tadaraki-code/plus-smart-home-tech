@@ -31,4 +31,16 @@ public class KafkaConfig {
 
         return producer;
     }
+
+    @Bean
+    public String hubTopic(@Value("${kafka.topic.hubs}") String hubTopic) {
+        log.info("Настроен топик для хабов: {}", hubTopic);
+        return hubTopic;
+    }
+
+    @Bean
+    public String sensorTopic(@Value("${kafka.topic.sensors}") String sensorTopic) {
+        log.info("Настроен топик для сенсоров: {}", sensorTopic);
+        return sensorTopic;
+    }
 }

@@ -10,8 +10,8 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 @Component
 public class SwitchSensorEventHandler extends BaseSensorEventHandler<SwitchSensorAvro> {
 
-    protected SwitchSensorEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected SwitchSensorEventHandler(KafkaProducerService kafkaProducerService, String sensorTopic) {
+        super(kafkaProducerService, sensorTopic);
     }
 
     @Override

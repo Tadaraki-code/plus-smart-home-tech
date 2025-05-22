@@ -10,8 +10,8 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 @Component
 public class ScenarioRemovedEventHandler extends BaseHubEventHandler<ScenarioRemovedEventAvro> {
 
-    protected ScenarioRemovedEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected ScenarioRemovedEventHandler(KafkaProducerService kafkaProducerService, String hubTopic) {
+        super(kafkaProducerService, hubTopic);
     }
 
     @Override

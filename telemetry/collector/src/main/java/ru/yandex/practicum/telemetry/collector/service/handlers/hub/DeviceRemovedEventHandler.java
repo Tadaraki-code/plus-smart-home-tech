@@ -8,10 +8,10 @@ import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
 import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 
 @Component
-public class DeviceRemovedEventHandler extends BaseHubEventHandler<DeviceRemovedEventAvro>{
+public class DeviceRemovedEventHandler extends BaseHubEventHandler<DeviceRemovedEventAvro> {
 
-    protected DeviceRemovedEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected DeviceRemovedEventHandler(KafkaProducerService kafkaProducerService, String hubTopic) {
+        super(kafkaProducerService, hubTopic);
     }
 
     @Override

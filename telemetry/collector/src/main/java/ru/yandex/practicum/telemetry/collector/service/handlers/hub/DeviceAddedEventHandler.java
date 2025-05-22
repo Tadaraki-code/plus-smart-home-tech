@@ -11,8 +11,8 @@ import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
 @Component
 public class DeviceAddedEventHandler extends BaseHubEventHandler<DeviceAddedEventAvro> {
 
-    protected DeviceAddedEventHandler(KafkaProducerService kafkaProducerService) {
-        super(kafkaProducerService);
+    protected DeviceAddedEventHandler(KafkaProducerService kafkaProducerService, String hubTopic) {
+        super(kafkaProducerService, hubTopic);
     }
 
     @Override
@@ -28,5 +28,5 @@ public class DeviceAddedEventHandler extends BaseHubEventHandler<DeviceAddedEven
                 .setId(_event.getId())
                 .setType(DeviceTypeAvro.valueOf(_event.getDeviceType().name()))
                 .build();
-     }
+    }
 }
