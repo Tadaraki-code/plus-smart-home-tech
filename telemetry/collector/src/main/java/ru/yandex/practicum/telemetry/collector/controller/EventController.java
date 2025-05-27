@@ -1,17 +1,13 @@
 package ru.yandex.practicum.telemetry.collector.controller;
 
-import jakarta.validation.Valid;
+import com.google.protobuf.Empty;
+import io.grpc.stub.StreamObserver;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.telemetry.collector.model.hub.BaseDeviceEvent;
-import ru.yandex.practicum.telemetry.collector.model.hub.DeviceEventType;
-import ru.yandex.practicum.telemetry.collector.model.sensors.BaseSensorEvent;
-import ru.yandex.practicum.telemetry.collector.model.sensors.SensorEventType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import net.devh.boot.grpc.server.service.GrpcService;
+import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.telemetry.collector.service.handlers.hub.HubEventHandler;
 import ru.yandex.practicum.telemetry.collector.service.handlers.sensors.SensorEventHandler;
 
@@ -21,11 +17,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestController
-@RequestMapping(path = "/events")
-public class EventController {
-    private final Map<SensorEventType, SensorEventHandler<?>> sensorEventHandlers;
-    private final Map<DeviceEventType, HubEventHandler<?>> hubEventHandlers;
+@GrpcService
+public class EventController extends CollectorControllerGrpc.CollectorControllerImplBase {
+    private final Map<SensorEventProto.PayloadCase, SensorEventHandler<?>> sensorEventHandlers;
+    private final Map<HubEventProto.PayloadCase, HubEventHandler<?>> hubEventHandlers;
 
     public EventController(List<SensorEventHandler<?>> sensorEventHandlerList,
                            List<HubEventHandler<?>> hubEventHandlerList) {
@@ -35,27 +30,39 @@ public class EventController {
                 .collect(Collectors.toMap(HubEventHandler::getMessageType, Function.identity()));
     }
 
-    @PostMapping("/sensors")
-    public ResponseEntity<Void> collectSensorEvent(@Valid @RequestBody BaseSensorEvent sensorEvent) {
-        if(sensorEventHandlers.containsKey(sensorEvent.getType())) {
-            sensorEventHandlers.get(sensorEvent.getType()).handle(sensorEvent);
-            log.info("Данные сенсора: {} полученые и отправлены в обработчик", sensorEvent);
-            return ResponseEntity.ok().build();
-        } else {
-            log.info("Данные сенсора : {} не полученые", sensorEvent);
-            throw new ValidationException("Не возмозможно найти обработчик для события " + sensorEvent.getType());
+    @Override
+    public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            if (sensorEventHandlers.containsKey(request.getPayloadCase())) {
+                sensorEventHandlers.get(request.getPayloadCase()).handle(request);
+                log.info("Данные сенсора: {} получены и отправлены в обработчик", request);
+            } else {
+                log.info("Данные сенсора: {} не обработаны", request);
+                throw new ValidationException("Не возмозможно найти обработчик для события " +
+                        request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
         }
     }
 
-    @PostMapping("/hubs")
-    public ResponseEntity<Void> collectHubEvent(@Valid @RequestBody BaseDeviceEvent deviceEvent) {
-        if(hubEventHandlers.containsKey(deviceEvent.getType())) {
-            hubEventHandlers.get(deviceEvent.getType()).handle(deviceEvent);
-            log.info("Данные датчика: {} полученые и отправлены в обработчик", deviceEvent);
-            return ResponseEntity.ok().build();
-        } else {
-            log.info("Данные датчика: {} не полученые", deviceEvent);
-            throw new ValidationException("Не возмозможно найти обработчик для события " + deviceEvent.getType());
+    @Override
+    public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
+        try {
+            if (hubEventHandlers.containsKey(request.getPayloadCase())) {
+                hubEventHandlers.get(request.getPayloadCase()).handle(request);
+                log.info("Данные датчика: {} полученые и отправлены в обработчик", request);
+            } else {
+                log.info("Данные датчика: {} не полученые", request);
+                throw new ValidationException("Не возмозможно найти обработчик для события " +
+                        request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(e);
         }
     }
 }
