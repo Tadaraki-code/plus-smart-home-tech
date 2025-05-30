@@ -1,9 +1,11 @@
 package ru.yandex.practicum.telemetry.collector.service.handlers.hub;
 
-import ru.yandex.practicum.telemetry.collector.model.hub.BaseDeviceEvent;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import org.apache.avro.specific.SpecificRecordBase;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.collector.service.KafkaProducerService;
+
+import java.time.Instant;
 
 public abstract class BaseHubEventHandler <T extends SpecificRecordBase> implements HubEventHandler<T> {
 
@@ -16,16 +18,21 @@ public abstract class BaseHubEventHandler <T extends SpecificRecordBase> impleme
     }
 
     @Override
-    public void handle(BaseDeviceEvent deviceEvent) {
+    public void handle(HubEventProto deviceEvent) {
         T payload = convertToAvro(deviceEvent);
+
+        Instant eventTimestamp = Instant.ofEpochSecond(
+                deviceEvent.getTimestamp().getSeconds(),
+                deviceEvent.getTimestamp().getNanos()
+        );
         HubEventAvro result = HubEventAvro.newBuilder()
                 .setHubId(deviceEvent.getHubId())
-                .setTimestamp(deviceEvent.getTimestamp())
+                .setTimestamp(eventTimestamp)
                 .setPayload(payload)
                 .build();
 
         kafkaProducerService.sendToKafka(topic, deviceEvent.getHubId(), result);
     }
 
-    protected abstract T convertToAvro(BaseDeviceEvent deviceEvent);
+    protected abstract T convertToAvro(HubEventProto deviceEvent);
 }
