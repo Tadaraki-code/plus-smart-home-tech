@@ -42,8 +42,8 @@ public class HubEventProcessor implements Runnable {
                 }
                 kafkaHubEventConsumer.commitAsync();
             }
-
         } catch (WakeupException ignored) {
+            log.info("Споймано WakeupException в HubEventProcessor {}", ignored.getMessage());
         } catch (Exception e) {
             log.error("Ошибка во время обработки событий от хаба", e);
         } finally {

@@ -49,8 +49,8 @@ public class AggregationStarter {
                 }
                 kafkaConsumer.commitAsync();
             }
-
         } catch (WakeupException ignored) {
+            log.info("Споймано WakeupException в aggregator {}", ignored.getMessage());
         } catch (Exception e) {
             log.error("Ошибка во время обработки событий от датчиков", e);
         } finally {
