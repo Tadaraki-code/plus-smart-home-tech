@@ -42,8 +42,8 @@ public class SnapshotProcessor {
                 }
                 kafkaSensorsSnapshotConsumer.commitAsync();
             }
-
         } catch (WakeupException ignored) {
+            log.info("Споймано WakeupException в SnapshotProcessor {}", ignored.getMessage());
         } catch (Exception e) {
             log.error("Ошибка во время обработки снепшота", e);
         } finally {
