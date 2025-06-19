@@ -10,4 +10,13 @@ spring:
           searchLocations:
             - classpath:config/telemetry/{application}
 server:
-  port: 8888
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      preferIpAddress: true
+      non-secure-port: ${server.port}
+      instance-id: ${spring.application.name}:${random.value}
