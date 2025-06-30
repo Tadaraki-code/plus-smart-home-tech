@@ -16,4 +16,4 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/shopping_store
     username: dbuser
-    password: "12345"
+    password: 12345
