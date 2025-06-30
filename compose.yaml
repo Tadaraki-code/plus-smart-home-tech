@@ -43,3 +43,15 @@ services:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=dbuser
       - POSTGRES_DB=analyzer
+
+  shop-db:
+    image: postgres:16.1
+    container_name: postgres-shop-db
+    ports:
+      - "6544:5432"
+    environment:
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_USER=dbuser
+      - POSTGRES_DB=shop
+    volumes:
+      - ./docker-init/shop-db-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
