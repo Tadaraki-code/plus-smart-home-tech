@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Builder
-@Table(name = "cart", schema = "cart_schema")
+@Table(name = "cart")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
@@ -27,7 +27,6 @@ public class Cart {
     @ElementCollection
     @CollectionTable(
             name = "cart_item",
-            schema = "cart_schema",
             joinColumns = @JoinColumn(name = "cart_id")
     )
     @MapKeyColumn(name = "product_id")

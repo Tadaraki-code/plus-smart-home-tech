@@ -1,6 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS product_schema AUTHORIZATION dbuser;
-GRANT USAGE, CREATE ON SCHEMA product_schema TO dbuser;
-CREATE SCHEMA IF NOT EXISTS cart_schema AUTHORIZATION dbuser;
-GRANT USAGE, CREATE ON SCHEMA cart_schema TO dbuser;
-CREATE SCHEMA IF NOT EXISTS warehouse_schema AUTHORIZATION dbuser;
-GRANT USAGE, CREATE ON SCHEMA warehouse_schema TO dbuser;

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "warehouse_item", schema = "warehouse_schema")
+@Table(name = "warehouse_item")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class WarehouseItem {
 
