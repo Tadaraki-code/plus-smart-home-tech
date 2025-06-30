@@ -48,7 +48,7 @@ services:
     image: postgres:16.1
     container_name: postgres-shop-db
     ports:
-      - "5432:5432"
+      - "6544:5432"
     environment:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=dbuser
