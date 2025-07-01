@@ -14,6 +14,6 @@ spring:
       schema-locations: classpath:schema.sql
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/shopping_cart
+    url: jdbc:postgresql://localhost:5432/commerce_shopping_cart
     username: postgres
     password: password
