@@ -23,8 +23,8 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/analyzer
-    username: dbuser
-    password: 12345
+    username: postgres
+    password: password
 
 kafka:
   bootstrap-servers: localhost:9092
