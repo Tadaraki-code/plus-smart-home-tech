@@ -40,9 +40,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=12345
-      - POSTGRES_USER=dbuser
-      - POSTGRES_DB=analyzer
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=telemetry_analyzer
     volumes:
       - ./docker-init/init-multiple-dbs.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
