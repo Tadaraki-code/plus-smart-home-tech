@@ -22,9 +22,9 @@ spring:
       schema-locations: classpath:schema.sql
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/telemetry_analyzer
-    username: postgres
-    password: password
+    url: jdbc:postgresql://localhost:5432/analyzer
+    username: dbuser
+    password: 12345
 
 kafka:
   bootstrap-servers: localhost:9092

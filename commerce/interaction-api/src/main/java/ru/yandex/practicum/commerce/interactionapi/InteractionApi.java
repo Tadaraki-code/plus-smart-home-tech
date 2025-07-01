@@ -10,6 +10,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "ru.yandex.practicum.commerce.interactionapi.clients")
 public class InteractionApi {
     public static void main(String[] args) {
-        SpringApplication.run(InteractionApi.class);
+        SpringApplication.run(InteractionApi.class, args);
     }
 }
