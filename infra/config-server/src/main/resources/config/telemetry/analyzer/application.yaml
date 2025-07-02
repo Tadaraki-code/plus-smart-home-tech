@@ -1,0 +1,33 @@
+server:
+  port: 0
+
+grpc:
+  client:
+    hub-router:
+      address: static://localhost:59090
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/analyzer
+    username: dbuser
+    password: 12345
+
+kafka:
+  bootstrap-servers: localhost:9092
+  topic:
+    hub: telemetry.hubs.v1
+    snapshot: telemetry.snapshots.v1

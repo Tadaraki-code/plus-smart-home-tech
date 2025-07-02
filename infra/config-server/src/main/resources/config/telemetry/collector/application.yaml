@@ -1,0 +1,12 @@
+kafka:
+  bootstrap-servers: localhost:9092
+  topic:
+    hubs: telemetry.hubs.v1
+    sensors: telemetry.sensors.v1
+
+grpc:
+  server:
+    port: 59091
+
+server:
+  port: 0

@@ -34,12 +34,26 @@ services:
                              --bootstrap-server kafka:29092'"
     init: true
 
-  analyzer-db:
+  smart-home-db:
     image: postgres:16.1
-    container_name: postgres-analyzer-db
+    container_name: postgres-smart-home-db
     ports:
-      - "6543:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=dbuser
       - POSTGRES_DB=analyzer
+    volumes:
+      - ./docker-init/init-multiple-dbs.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+#  shop-db:
+#    image: postgres:16.1
+#    container_name: postgres-shop-db
+#    ports:
+#      - "6544:5432"
+#    environment:
+#      - POSTGRES_PASSWORD=12345
+#      - POSTGRES_USER=dbuser
+#      - POSTGRES_DB=shop
+#    volumes:
+#      - ./docker-init/init-multiple-dbs.sql:/docker-entrypoint-initdb.d/init.sql:ro
