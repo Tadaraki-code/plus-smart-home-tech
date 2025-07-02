@@ -48,24 +48,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void deleteCart(String userName) {
-        cartRepository.findByUserName(userName)
-                .ifPresent(cart -> {
-                    cartRepository.deleteById(cart.getId());
-                    log.info("Корзина пользователя {} удалена", userName);
-                });
+        findCart(userName).ifPresent(cart -> {
+            cartRepository.deleteById(cart.getId());
+            log.info("Корзина пользователя {} удалена", userName);
+        });
     }
 
     @Override
     public ShoppingCartDto removeItemFromCart(String userName, List<UUID> items) {
-        Cart cart = cartRepository.findByUserName(userName)
-                .orElseThrow(() -> new NotFoundException("Корзина пользователя с именем " + userName + " не найдена"));
+        Cart cart = getCartOrThrow(userName);
 
         for (UUID itemId : items) {
-            if (!cart.getProducts().containsKey(itemId)) {
-                throw new NoProductsInShoppingCartException(
-                        "Товара с ID " + itemId + " нет в корзине",
-                        "Товара с ID " + itemId + " нет в корзине");
-            }
+            validateProductInCart(cart, itemId);
             cart.getProducts().remove(itemId);
             log.info("Товар с ID {} удалён из корзины пользователя {}", itemId, userName);
         }
@@ -76,15 +70,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ShoppingCartDto changeItemQuantity(String userName, ChangeProductQuantityRequest quantityRequest) {
-        Cart cart = cartRepository.findByUserName(userName)
-                .orElseThrow(() -> new NotFoundException("Корзина пользователя с именем " + userName + " не найдена"));
+        Cart cart = getCartOrThrow(userName);
 
         UUID productId = quantityRequest.getProductId();
-        if (!cart.getProducts().containsKey(productId)) {
-            throw new NoProductsInShoppingCartException(
-                    "Товара с ID " + productId + " нет в корзине",
-                    "Товара с ID " + productId + " нет в корзине");
-        }
+        validateProductInCart(cart, productId);
 
         cart.getProducts().put(productId, quantityRequest.getNewQuantity());
         cartRepository.save(cart);
@@ -93,8 +82,26 @@ public class CartServiceImpl implements CartService {
         return cartMapper.toDto(cart);
     }
 
+    private void validateProductInCart(Cart cart, UUID productId) {
+        if (!cart.getProducts().containsKey(productId)) {
+            throw new NoProductsInShoppingCartException(
+                    "Товара с ID " + productId + " нет в корзине",
+                    "Товара с ID " + productId + " нет в корзине"
+            );
+        }
+    }
+
+    private Optional<Cart> findCart(String userName) {
+        return cartRepository.findByUserName(userName);
+    }
+
+    private Cart getCartOrThrow(String userName) {
+        return findCart(userName)
+                .orElseThrow(() -> new NotFoundException("Корзина пользователя с именем " + userName + " не найдена"));
+    }
+
     private Cart getOrCreateCart(String userName) {
-        return cartRepository.findByUserName(userName)
+        return findCart(userName)
                 .orElseGet(() -> {
                     Cart newCart = new Cart(UUID.randomUUID(), userName, new HashMap<>());
                     cartRepository.save(newCart);

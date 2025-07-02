@@ -1,5 +1,4 @@
 package ru.yandex.practicum.commerce.shoppingstore.service;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -38,7 +37,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
             log.info("Сгенерирован новый UUID для продукта: {}", product.getId());
         }
 
-        if (productRepository.existsById(product.getId())) {
+        if (checkExistsById(product.getId())) {
             log.info("Продукт с ID {} уже существует", product.getId());
             throw new IllegalArgumentException("Товар с ID " + product.getId() + " уже существует");
         }
@@ -57,7 +56,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
             throw new IllegalArgumentException("Идентификатор товара обязателен");
         }
 
-        if (productRepository.existsById(productDto.getProductId())) {
+        if (checkExistsById(productDto.getProductId())) {
             Product product = productRepository.getReferenceById(productDto.getProductId());
 
             if (!productDto.getProductName().equals(product.getProductName())) {
@@ -104,7 +103,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public Boolean deleteProduct(UUID productId) {
         log.info("Удаление из каталога продукта с ID: {}", productId);
 
-        if (productRepository.existsById(productId)) {
+        if (checkExistsById(productId)) {
             Product product = productRepository.getReferenceById(productId);
             product.setProductState(ProductState.DEACTIVATE);
             productRepository.save(product);
@@ -120,7 +119,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public Boolean updateQuantityState(UUID productId, QuantityState state) {
         log.info("Обновление количества для продукта c ID {}, новое значение : {}", productId, state);
 
-        if (productRepository.existsById(productId)) {
+        if (checkExistsById(productId)) {
             Product product = productRepository.getReferenceById(productId);
             product.setQuantityState(state);
             productRepository.save(product);
@@ -136,7 +135,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public ProductDto getProduct(UUID productId) {
         log.info("Запрос продукта по ID: {}", productId);
 
-        if (productRepository.existsById(productId)) {
+        if (checkExistsById(productId)) {
             Product product = productRepository.getReferenceById(productId);
             log.info("Продукт найден: {}", product);
             return productMapper.toDto(product);
@@ -145,6 +144,10 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         log.info("Продукт с ID {} не найден", productId);
         throw new ProductNotFoundException("Товар с ID " + productId + " не найден",
                 "Товар с ID " + productId + " не найден");
+    }
+
+    private boolean checkExistsById(UUID productId) {
+        return productRepository.existsById(productId);
     }
 }
 
