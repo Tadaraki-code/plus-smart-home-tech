@@ -13,3 +13,5 @@ feign:
     config:
       warehouse:
         loggerLevel: full
+server:
+  port: 0

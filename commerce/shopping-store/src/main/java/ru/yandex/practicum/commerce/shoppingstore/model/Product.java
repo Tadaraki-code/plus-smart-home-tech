@@ -7,6 +7,7 @@ import ru.yandex.practicum.commerce.interactionapi.shop.ProductCategory;
 import ru.yandex.practicum.commerce.interactionapi.shop.ProductState;
 import ru.yandex.practicum.commerce.interactionapi.shop.QuantityState;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -42,5 +43,5 @@ public class Product {
     ProductCategory productCategory;
 
     @Column(nullable = false)
-    Double price;
+    BigDecimal price;
 }

@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
         errorResponse.setHttpStatus("401 UNAUTHORIZED");
         errorResponse.setUserMessage(ex.getUserMessage());
         errorResponse.setMessage(ex.getMessage());
+        errorResponse.setEx("NotAuthorizedUserException");
         errorResponse.setStackTrace(getStackTrace(ex));
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }

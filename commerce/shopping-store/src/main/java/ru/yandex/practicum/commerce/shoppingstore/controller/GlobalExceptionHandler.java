@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setHttpStatus("404 NOT_FOUND");
         errorResponse.setUserMessage(ex.getUserMessage());
+        errorResponse.setEx("ProductNotFoundException");
         errorResponse.setMessage(ex.getMessage());
         errorResponse.setStackTrace(getStackTrace(ex));
 

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -33,5 +34,5 @@ public class ProductDto {
 
     @NotNull(message = "Необходима цена.")
     @Min(value = 1, message = "Цена должна быть минимум 1.")
-    Double price;
+    BigDecimal price;
 }

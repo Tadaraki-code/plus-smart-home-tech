@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -21,5 +22,5 @@ public class NewProductInWarehouseRequest {
     DimensionDto dimension;
     @NotNull(message = "Необходим вес товара.")
     @Min(value = 1, message = "Вес должен быть минимум 1.")
-    Double weight;
+    BigDecimal weight;
 }
