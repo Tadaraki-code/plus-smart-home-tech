@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS product (
     quantity_state VARCHAR(50) NOT NULL,
     product_state VARCHAR(50) NOT NULL,
     product_category VARCHAR(50),
-    price DECIMAL(10, 2) NOT NULL CHECK (price >= 1)
+    price NUMERIC(9,4) NOT NULL CHECK (price >= 1)
 );

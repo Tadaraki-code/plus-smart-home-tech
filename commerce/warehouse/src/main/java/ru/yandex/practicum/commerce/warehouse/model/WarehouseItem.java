@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -23,13 +24,13 @@ public class WarehouseItem {
     @Column(name = "fragile", nullable = false)
     boolean fragile;
     @Column(name = "width", nullable = false)
-    double width;
+    BigDecimal width;
     @Column(name = "height", nullable = false)
-    double height;
+    BigDecimal height;
     @Column(name = "depth", nullable = false)
-    double depth;
+    BigDecimal depth;
     @Column(name = "weight", nullable = false)
-    double weight;
+    BigDecimal weight;
     @Column(name = "quantity", nullable = false)
     long quantity;
     @Column(name = "reserved_quantity", nullable = false)

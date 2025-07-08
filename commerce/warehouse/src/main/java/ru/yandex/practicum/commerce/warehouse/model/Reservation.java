@@ -19,6 +19,8 @@ public class Reservation {
     Long id;
     @Column(name = "shopping_cart_id", nullable = false)
     UUID shoppingCartId;
+    @Column(name = "username", nullable = false)
+    String username;
     @Column(name = "product_id", nullable = false)
     UUID productId;
     @Column(name = "reserved_quantity", nullable = false)

@@ -1,22 +1,27 @@
 package ru.yandex.practicum.commerce.warehouse.service;
 
 import ru.yandex.practicum.commerce.interactionapi.cart.ShoppingCartDto;
-import ru.yandex.practicum.commerce.interactionapi.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.commerce.interactionapi.warehouse.AddressDto;
-import ru.yandex.practicum.commerce.interactionapi.warehouse.BookedProductsDto;
-import ru.yandex.practicum.commerce.interactionapi.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.commerce.interactionapi.warehouse.*;
 
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public interface WarehouseService {
 
     void addNewProduct(NewProductInWarehouseRequest request);
 
-    BookedProductsDto checkProductQuantity(ShoppingCartDto cart);
+    void productInShipped(ShippedToDeliveryRequest shippedRequest);
+
+    void returnProductInWarehouse(Map<UUID, Integer> refoundProducts, UUID orderId);
+
+    BookedProductsDto checkProductQuantity(String username, ShoppingCartDto cart);
+
+    BookedProductsDto assemblyProductForDelivery(AssemblyProductsForOrderRequest orderRequest);
 
     void addProductQuantity(AddProductToWarehouseRequest request);
 
     AddressDto getWarehouseAddress();
 
-    void cancelReservation(UUID shoppingCartId);
+    void cancelReservation(String username, Set<UUID> productIds);
 }
