@@ -56,9 +56,6 @@ public class PaymentServiceImpl implements PaymentService {
                     "Невозможно рассчитать общую стоимость для заказа с id: " +
                             orderDto.getOrderId() + ", не рассчитана стоимость доставки.");
         }
-        log.info(String.valueOf(orderDto.getProductPrice()));
-        log.info(String.valueOf(orderDto.getDeliveryPrice()));
-        log.info(String.valueOf(orderDto.getProductPrice().multiply(PAYMENT_FEE_RATE)));
         BigDecimal totalCost = orderDto.getProductPrice()
                 .add(orderDto.getDeliveryPrice())
                 .add(orderDto.getProductPrice().multiply(PAYMENT_FEE_RATE));

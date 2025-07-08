@@ -284,9 +284,9 @@ public class OrderServiceImpl implements OrderService {
         OrderState state = order.getState();
 
         if (!state.equals(OrderState.NEW) || order.getDeliveryPrice() != null) {
-            log.error("Невозможно рассчитать стоимость доставки для заказа id: {}, статус: {}, доставка уже расчитана: {}",
-                    orderId, state, order.getDeliveryPrice() != null);
-            throw new IllegalStateException("Для заказа уже расчитна цена доставки");
+            log.error("Невозможно рассчитать стоимость доставки для заказа id: {}, статус: {}, " +
+                            "доставка уже рассчитана: {}", orderId, state, order.getDeliveryPrice() != null);
+            throw new IllegalStateException("Для заказа уже рассчитана стоимость доставки");
         }
 
         AddressDto warehouse = warehouseClient.getWarehouseAddress();
@@ -301,7 +301,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal deliveryPrice = deliveryClient.calculateDeliveryCost(calculateDeliveryDto);
         order.setDeliveryPrice(deliveryPrice);
         Order savedOrder = orderRepository.save(order);
-        log.info("Стоимость доставки для заказа id: {} успешно расчитана: {}", orderId, deliveryPrice);
+        log.info("Стоимость доставки для заказа id: {} успешно рассчитана: {}", orderId, deliveryPrice);
         return orderMapper.toDto(savedOrder);
     }
 

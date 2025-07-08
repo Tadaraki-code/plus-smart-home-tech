@@ -163,7 +163,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         log.info("Попытка пополнить товар {} на складе на {} единиц", request.getProductId(), request.getQuantity());
         WarehouseItem item = itemRepository.findById(request.getProductId())
                 .orElseThrow(() -> {
-                    log.error("Ошибка при добавлнии товара, товар с ID {} не найден на складе", request.getProductId());
+                    log.error("Ошибка при добавлении товара, товар с ID {} не найден на складе", request.getProductId());
                     return new NoSpecifiedProductInWarehouseException(
                             "Товар с ID " + request.getProductId() + " не найден на складе",
                             "Товар с ID " + request.getProductId() + " не найден на складе");
@@ -213,12 +213,12 @@ public class WarehouseServiceImpl implements WarehouseService {
             item.setReservedQuantity(item.getReservedQuantity() - reservation.getReservedQuantity());
             itemRepository.save(item);
 
-            log.info("Резервация {} ед. товара {} отменена, ник пользоватля {}",
+            log.info("Резервация {} ед. товара {} отменена, ник пользователя {}",
                     reservation.getReservedQuantity(), reservation.getProductId(), username);
 
             reservationRepository.delete(reservation);
         }
-        log.info("резервации для корзины пользователя {} успешно отменены", username);
+        log.info("Резервации для корзины пользователя {} успешно отменены", username);
     }
 
 
@@ -265,7 +265,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             Reservation reservation = existingReservations.get(productId);
             if (reservation == null) {
                 if (item.getQuantity() < qty) {
-                    throw new IllegalArgumentException("Не достаточно товарана складе " + productId);
+                    throw new IllegalArgumentException("Недостаточно товара на складе " + productId);
                 }
                 item.setQuantity(item.getQuantity() - qty);
                 item.setReservedQuantity(item.getReservedQuantity() + qty);
@@ -280,7 +280,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             } else if (reservation.getReservedQuantity() != qty) {
                 long diff = qty - reservation.getReservedQuantity();
                 if (diff > 0 && item.getQuantity() < diff) {
-                    throw new IllegalArgumentException("Не достаточно товарана складе " + productId);
+                    throw new IllegalArgumentException("Недостаточно товарана складе " + productId);
                 }
                 item.setQuantity(item.getQuantity() - diff);
                 item.setReservedQuantity(item.getReservedQuantity() + diff);

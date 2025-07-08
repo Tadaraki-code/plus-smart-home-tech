@@ -144,8 +144,8 @@ public class DeliveryServiceImpl implements DeliveryService {
 
         if (orderDto.getFragile() == null || orderDto.getDeliveryVolume() == null
                 || orderDto.getDeliveryWeight() == null) {
-            throw new IllegalStateException("Невозмжно расчитать стоимость для заказа с id: " + orderDto.getOrderId() +
-                    ", для заказа не расчитаны вес и габариты");
+            throw new IllegalStateException("Невозможно рассчитать стоимость для заказа с id: " +
+                    orderDto.getOrderId() + ", для заказа не рассчитаны вес и габариты");
         }
 
         AddressDto deliveryAddress = calculateDeliveryDto.getToAddress();
